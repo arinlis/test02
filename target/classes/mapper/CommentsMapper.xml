@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alinlis.test02.mapper.CommentsMapper">
+    <resultMap id="commentResultMap" type="com.alinlis.test02.entity.Comments">
+        <result property="userface" column="userFace"/>
+        <result property="username" column="username"/>
+        <result property="commentContent" column="comment_content"/>
+        <result property="commentDate" column="comment_date"/>
+    </resultMap>
+    <resultMap id="commentResultMap2" type="com.alinlis.test02.entity.Comments">
+        <result property="userId" column="user_id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="commentContent" column="comment_content"/>
+        <result property="commentDate" column="comment_date"/>
+        <result property="commentId" column="comment_id"/>
+    </resultMap>
+    <insert id="addComment" parameterType="com.alinlis.test02.entity.Comments">
+insert into t_comments(article_id,comment_content,user_id,comment_date )
+values(#{articleId},#{commentContent},#{userId},#{commentDate})
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from t_comments
+        where comment_id=#{id}
+    </delete>
+    <select id="selectbyId" resultMap="commentResultMap" parameterType="java.lang.Integer">
+        SELECT  t_admin.`username`,t_admin.`userFace`,t_comments.`comment_content`,t_comments.`comment_date`
+         FROM t_admin,t_comments
+         WHERE t_comments.`article_id`=#{id} AND t_admin.`id`=t_comments.`user_id`
+    </select>
+    <select id="getCommentpage" resultMap="commentResultMap2">
+    SELECT * FROM t_comments
+
+    </select>
+
+</mapper>

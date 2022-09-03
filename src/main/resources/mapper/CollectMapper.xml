@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alinlis.test02.mapper.CollectMapper">
+    <resultMap id="articleResultMap1" type="com.alinlis.test02.entity.TArticles">
+        <id property="articleId" column="article_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="articleTitle" column="article_title"/>
+        <result property="articleContent" column="article_content"/>
+        <result property="articleViews" column="article_views"/>
+        <result property="articleCommentCount" column="article_comment_count"/>
+        <result property="articleDate"  column="article_date"/>
+        <result property="articleCover" column="article_cover"/>
+        <result property="username" column="username"/>
+        <result property="userFace" column="userFace"/>
+    </resultMap>
+    <insert id="add" parameterType="com.alinlis.test02.entity.Collect">
+        insert into t_collect(article_id,user_id)
+values(#{articleId},#{userId})
+    </insert>
+    <select id="selectByid" resultMap="articleResultMap1" parameterType="java.lang.Long">
+        SELECT *
+        FROM t_articles
+        WHERE article_id=
+        ANY(
+        SELECT article_id
+        FROM t_collect
+        WHERE user_id=#{uid}
+         )
+    </select>
+</mapper>

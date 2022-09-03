@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alinlis.test02.mapper.UserMapper">
+  <insert id="addUser" parameterType="com.alinlis.test02.entity.User">
+  insert into t_admin(username,password)
+  values(#{username},#{password})
+  </insert>
+
+
+    <update id="Disable" parameterType="java.lang.Integer">
+        UPDATE t_admin
+SET enabled=0
+WHERE id=#{id}
+    </update>
+    <update id="uploadimg" parameterType="com.alinlis.test02.entity.User">
+
+UPDATE t_admin
+SET userFace=#{userFace}
+WHERE id=#{id}
+    </update>
+    <update id="change" parameterType="com.alinlis.test02.entity.User">
+        update t_admin
+        set name=#{name},username=#{username},phone=#{phone},telephone=#{telephone},address=#{address}
+        where id=#{id}
+    </update>
+
+    <select id="getbyuser" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT id FROM t_admin WHERE username=#{username}
+    </select>
+</mapper>

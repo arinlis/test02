@@ -1,0 +1,74 @@
+server:
+  # 端口
+ port: 8081
+#  port: 8088
+#  servlet:
+#    context-path: /api
+spring:
+  resources:
+    static-locations: file:D:/img/  #资源路径
+  mvc:
+    static-path-pattern: /img/**    #请求路径
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password:
+#      url: jdbc:mysql://localhost:3306/al?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+ #    usernaem: al
+#    password: Wt2rrJmxdaHDpywC
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+#  redis:
+#    #超时时间
+#    timeout: 10000ms
+#    #服务器地址
+#    host: 192.168.10.100
+#    #服务器端口
+#    port: 6379
+#    #数据库
+#    database: 0
+#    #密码
+#    password: root
+#    lettuce:
+#      pool:
+#        #最大连接数，默认8
+#        max-active: 1024
+#        #最大连接阻塞等待时间，默认-1
+#        max-wait: 10000ms
+#        #最大空闲连接
+#        max-idle: 200
+#        #最小空闲连接
+#        min-idle: 5
+
+
+# Mybatis-plus配置
+mybatis-plus:
+  #配置Mapper映射文件
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+  # 配置MyBatis数据返回类型别名（默认别名是类名）
+  type-aliases-package: com.alinlis.test02.entity
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: false
+
+## Mybatis SQL 打印(方法接口所在的包，不是Mapper.xml所在的包)
+logging:
+  level:
+    com.alinlis.test02.mapper: debug
+
+
+jwt:
+  # JWT存储的请求头
+  tokenHeader: Authorization
+  # JWT 加解密使用的密钥
+  secret: alinlis-secret
+  # JWT的超期限时间（60*60*24）
+  expiration: 604800
+  # JWT 负载中拿到开头
+  tokenHead: Bearer

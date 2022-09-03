@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alinlis.test02.mapper.TArticlesMapper">
+<resultMap id="articleResultMap1" type="com.alinlis.test02.entity.TArticles">
+        <id property="articleId" column="article_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="articleTitle" column="article_title"/>
+        <result property="articleContent" column="article_content"/>
+        <result property="articleViews" column="article_views"/>
+        <result property="articleCommentCount" column="article_comment_count"/>
+        <result property="articleDate"  column="article_date"/>
+        <result property="articleCover" column="article_cover"/>
+        <result property="username" column="username"/>
+        <result property="userFace" column="userFace"/>
+</resultMap>
+<resultMap id="articleResultMap2" type="com.alinlis.test02.entity.TArticles">
+<id property="articleId" column="article_id"/>
+    <result property="userId" column="user_id"/>
+    <result property="articleTitle" column="article_title"/>
+    <result property="articleContent" column="article_content"/>
+    <result property="articleViews" column="article_views"/>
+    <result property="articleCommentCount" column="article_comment_count"/>
+    <result property="articleDate"  column="article_date"/>
+    <result property="username" column="username"/>
+    <result property="userFace" column="userFace"/>
+    <result property="articleSort" column="article_sort"/>
+    <result property="articleCover" column="article_cover"/>
+    <collection property="comments" javaType="java.util.List" resultMap="articleResultMap1"/>
+</resultMap>
+
+    <insert id="addarticle" parameterType="com.alinlis.test02.entity.TArticles">
+        insert into t_articles(user_id,article_title,article_content,article_date,article_cover,article_sort)
+        values(#{userId},#{articleTitle},#{articleContent},#{articleDate},#{articleCover},#{articleSort})
+    </insert>
+
+    <select id="selectArticleAll" resultMap="articleResultMap1">
+         SELECT t_admin.`username`,t_articles.*
+         FROM t_admin,t_articles
+         WHERE t_admin.`id`=t_articles.`user_id`
+    </select>
+    <select id="selectArticle" resultMap="articleResultMap2">
+         SELECT  t_admin.`username`,t_admin.`userFace`,t_articles.*
+         FROM t_admin,t_articles
+         WHERE article_id=#{artilceId} and t_admin.`id`=t_articles.`user_id`
+    </select>
+    <select id="selectArticlebysort" resultMap="articleResultMap1">
+         SELECT t_admin.`username`,t_articles.*
+         FROM t_admin,t_articles
+         WHERE t_admin.`id`=t_articles.`user_id`  AND article_sort=#{sort}
+    </select>
+
+
+    <select id="search" resultMap="articleResultMap1" parameterType="java.lang.String">
+SELECT t_articles.*  FROM t_articles
+WHERE article_sort LIKE CONCAT ('%',#{string},'%') OR article_title LIKE  CONCAT ('%',#{string},'%') OR user_id IN (SELECT t_admin.`id` FROM t_admin WHERE t_admin.`name` LIKE CONCAT ('%',#{srting},'%'))
+    </select>
+
+
+    <select id="selevtByUid" resultMap="articleResultMap1" parameterType="java.lang.Integer">
+SELECT t_articles.*  FROM t_articles
+WHERE user_id=#{id}
+    </select>
+    <select id="pagefindall" resultType="com.alinlis.test02.entity.TArticles"></select>
+    <select id="getnew" resultType="java.lang.Long">
+                SELECT article_id
+FROM t_articles
+ORDER BY article_date
+DESC
+LIMIT 0,3
+    </select>
+    <select id="getarticlepage" resultMap="articleResultMap1">
+        SELECT a.*,u.`username`
+FROM t_admin AS u
+RIGHT JOIN
+t_articles a
+ON u.`id`=a.`user_id`
+    </select>
+
+
+</mapper>
